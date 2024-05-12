@@ -1,0 +1,514 @@
+info:
+  title: Music API
+  version: 0.1.0
+tags:
+- name: Main
+- name: Album
+- name: Music
+paths:
+  /ping:
+    get:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+      summary: Ping
+  /album/:
+    get:
+      parameters:
+      - in: query
+        name: album_id
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Album'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Album
+      summary: Get Album
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddAlbumOut'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Album
+      summary: Add Album
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAlbumIn'
+    delete:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Album
+      summary: Delete Album
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAlbumIn'
+  /media/:
+    get:
+      parameters:
+      - in: query
+        name: media_id
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Music'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Get Music
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Add Music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddMusicIn'
+    delete:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Delete Music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteMusicIn'
+  /album/query:
+    get:
+      parameters:
+      - in: query
+        name: last_id
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      - in: query
+        name: before_date
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 60
+        required: false
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+          default: true
+        required: false
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryAlbumsOut'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Album
+      summary: Query Albums
+  /media/query:
+    get:
+      parameters:
+      - in: query
+        name: last_id
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      - in: query
+        name: before_date
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 30
+        required: false
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+          default: true
+        required: false
+      - in: query
+        name: album_id
+        schema:
+          type: string
+          default: null
+          nullable: true
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryMusicOut'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Query Music
+  /main/cookies:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Main
+      summary: Update Cookies
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cookies'
+  /album/rename:
+    put:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Album
+      summary: Rename Album
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameAlbumIn'
+  /media/download:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Download Musics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadMusicsIn'
+  /media/update-albums:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Update Music Albums
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMusicAlbumsIn'
+  /media/remove-from-album:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+          description: Validation error
+      tags:
+      - Music
+      summary: Remove Music From Album
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveMusicFromAlbumIn'
+openapi: 3.0.3
+components:
+  schemas:
+    ValidationError:
+      properties:
+        detail:
+          type: object
+          properties:
+            <location>:
+              type: object
+              properties:
+                <field_name>:
+                  type: array
+                  items:
+                    type: string
+        message:
+          type: string
+      type: object
+    Album:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        thumbnail_path:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AddAlbumIn:
+      type: object
+      properties:
+        name:
+          type: string
+    AddAlbumOut:
+      type: object
+      properties:
+        name:
+          type: string
+    DeleteAlbumIn:
+      type: object
+      properties:
+        album_ids:
+          type: array
+          items:
+            type: string
+    Music:
+      type: object
+      properties:
+        id:
+          type: string
+        duration:
+          type: number
+        webpage_url:
+          type: string
+        thumbnail_path:
+          type: string
+        video_path:
+          type: string
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        created_at:
+          type: string
+          format: date-time
+        created_at_ksuid:
+          type: string
+    AddMusicIn:
+      type: object
+      properties:
+        media_url:
+          type: string
+    DeleteMusicIn:
+      type: object
+      properties:
+        media_ids:
+          type: array
+          items:
+            type: string
+    QueryAlbumsOut:
+      type: object
+      properties:
+        albums:
+          type: array
+          items:
+            $ref: '#/components/schemas/Album'
+        no_more_albums:
+          type: boolean
+    QueryMusicOut:
+      type: object
+      properties:
+        media:
+          type: array
+          items:
+            $ref: '#/components/schemas/Music'
+        no_more_media:
+          type: boolean
+    Cookies:
+      type: object
+      properties:
+        cookies:
+          x-maximum: 1 MB
+          type: string
+          format: binary
+    RenameAlbumIn:
+      type: object
+      properties:
+        album_id:
+          type: string
+        new_name:
+          type: string
+    DownloadMusicsIn:
+      type: object
+      properties:
+        media_ids:
+          type: array
+          items:
+            type: string
+    UpdateMusicAlbumsIn:
+      type: object
+      properties:
+        media_id:
+          type: string
+        album_ids:
+          type: array
+          items:
+            type: string
+    RemoveMusicFromAlbumIn:
+      type: object
+      properties:
+        media_id:
+          type: string
+        album_id:
+          type: string
+
